@@ -114,11 +114,15 @@ namespace OmniSharp
                 Console.CancelKeyPress +=
                     (sender, e) =>
                 {
-                    solution.Terminate();
-                    Console.WriteLine("Ctrl-C pressed");
-                    
+                    if (!System.Diagnostics.Debugger.IsAttached)
+                    {
+                        solution.Terminate();
+                        Console.WriteLine("Ctrl-C pressed");
+                    }
                     e.Cancel = true;
+                    
                 };
+
                 var nancyHost = new NancyHost(new Bootstrapper(
                                         solution, 
                                         new NativeFileSystem(), 
